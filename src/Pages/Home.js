@@ -21,10 +21,11 @@ class Home extends Component {
                         {({loading, data, error}) => {
                             if(loading) return <LoadingSpinner />
                             if(error) return <ErrorPage />
-                            const {products} = data.category;
+
+                            const {products,name} = data.category;
                             return (
                                 <>
-                                <h1 className='category__header'>All</h1>
+                                <h1 className='category__header'>{name}</h1>
                                 <section className='card-section'>
                                     {
                                     products.map(product => (
