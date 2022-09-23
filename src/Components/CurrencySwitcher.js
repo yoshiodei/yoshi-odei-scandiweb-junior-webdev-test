@@ -19,14 +19,12 @@ class CurrencySwitcher extends Component {
             currency.classList.remove('navbar__currency-switcher-list-item--selected');
         }
         e.target.classList.add('navbar__currency-switcher-list-item--selected');
-
         const currencyObject = {...currency, index}
         this.props.changeCurrency(currencyObject);
-        this.props.toggleCurrencySwitcher();
     }
 
     render() {
-        const {toggleCurrencySwitcher} = this.props;
+        const {toggleCurrencySwitcher,currencyLabel} = this.props;
 
         return (
             <div className='navbar__currency-switcher-div' onClick={()=> toggleCurrencySwitcher()}>
@@ -39,7 +37,7 @@ class CurrencySwitcher extends Component {
                             if(error) return <div>...Error</div>
                             const {currencies} = data;
                             return (currencies.map((currency,index) => (
-                                        <li className={(index === 0) ? 'navbar__currency-switcher-list-item navbar__currency-switcher-list-item--selected' : 'navbar__currency-switcher-list-item'} 
+                                        <li className={(currencyLabel.label === currency.label) ? 'navbar__currency-switcher-list-item navbar__currency-switcher-list-item--selected' : 'navbar__currency-switcher-list-item'} 
                                             key={index} onClick={(e) => this.switchCurrency(e,currency,index)}>
                                             { `${currency.symbol} ${currency.label}` }
                                         </li>
@@ -53,6 +51,12 @@ class CurrencySwitcher extends Component {
     }
 }
 
-const mapDispatchToProps = { changeCurrency }
+const mapDispatchToProps = { changeCurrency };
 
-export default connect(null,mapDispatchToProps)(CurrencySwitcher);
+const mapStateToProps = (state) => {
+    return { 
+        currencyLabel : state.currency,
+     }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(CurrencySwitcher);
